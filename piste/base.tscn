@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="PlaneMesh" id=11]
+
+[sub_resource type="SpatialMaterial" id=12]
+albedo_color = Color( 0.117647, 0, 0.172549, 1 )
+
+[node name="rect" type="MeshInstance"]
+transform = Transform( 0.15, 0, 0, 0, 0.001, 0, 0, 0, 0.37, 0, 0.017, 0 )
+mesh = SubResource( 11 )
+material/0 = SubResource( 12 )
