@@ -1,11 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://dffy2odlflqmc"]
 
-[sub_resource type="PlaneMesh" id=11]
+[ext_resource type="Material" uid="uid://bggvg4lganbo" path="res://couleur/purple.tres" id="1_r7qwv"]
 
-[sub_resource type="SpatialMaterial" id=12]
-albedo_color = Color( 0.117647, 0, 0.172549, 1 )
+[sub_resource type="PlaneMesh" id="11"]
+size = Vector2(1, 2.05)
 
-[node name="rect" type="MeshInstance"]
-transform = Transform( 0.15, 0, 0, 0, 0.001, 0, 0, 0, 0.37, 0, 0.017, 0 )
-mesh = SubResource( 11 )
-material/0 = SubResource( 12 )
+[node name="rect" type="MeshInstance3D"]
+transform = Transform3D(0.15, 0, 0, 0, 0.001, 0, 0, 0, 0.37, 0, 0.017, 0)
+mesh = SubResource("11")
+surface_material_override/0 = ExtResource("1_r7qwv")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8ubr014yfdaw"]
+
+[ext_resource type="Script" path="res://menu/musique_liste.gd" id="1_0dcml"]
+
+[node name="musique_liste" type="Node3D"]
+script = ExtResource("1_0dcml")

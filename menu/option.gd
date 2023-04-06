@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 
 # Declare member variables here. Examples:
@@ -12,7 +12,7 @@ signal param(entrer)
 
 func _input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if entrer !=0:
 				emit_signal("param",entrer)
 

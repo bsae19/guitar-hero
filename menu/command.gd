@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 
 # Declare member variables here. Examples:
@@ -21,7 +21,7 @@ func _ready():
 # Called when the node enters the scene tree for the first time.
 func _input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if !ent:
 				match entrer:
 					0:
@@ -33,7 +33,7 @@ func _input(event):
 					_:
 						ancienentrez=entrer
 						ent=true
-						instan=entrez.instance()
+						instan=entrez.instantiate()
 						add_child(instan)
 
 func _unhandled_input(event):
@@ -43,14 +43,14 @@ func _unhandled_input(event):
 				desactiver=false
 				for i in range(0,actlist.size()):
 					get_node("StaticBody"+str(i+1)+"/label"+str(i+1)).modulate= Color(1,1,1)
-				var list=PoolByteArray([event.scancode])
-				actlist[entrer-1]=list.get_string_from_ascii()
-				for i in range(0,actlist.size()):
-					for y in range(0,actlist.size()):
-						if i!=y and actlist[i]==actlist[y]:
-							desactiver=true
-							get_node("StaticBody"+str(i+1)+"/label"+str(i+1)).modulate= Color(1,0,0)
-							get_node("StaticBody"+str(y+1)+"/label"+str(y+1)).modulate= Color(1,0,0)
+				var list=PackedByteArray([event.keycode])
+				actlist[ancienentrez-1]=list.get_string_from_ascii()
+				print(ancienentrez)
+				for y in range(0,actlist.size()):
+					if ancienentrez-1!=y and actlist[ancienentrez-1]==actlist[y]:
+						desactiver=true
+						get_node("StaticBody"+str(ancienentrez)+"/label"+str(ancienentrez)).modulate= Color(1,0,0)
+						get_node("StaticBody"+str(y+1)+"/label"+str(y+1)).modulate= Color(1,0,0)
 				get_node("StaticBody"+str(ancienentrez)+"/label"+str(ancienentrez)).text=str(actlist[ancienentrez-1])
 				ancienentrez=0
 				ent=false

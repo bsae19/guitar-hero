@@ -1,21 +1,45 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://b5s2y3y68xndb"]
 
-[ext_resource path="res://jeu.gd" type="Script" id=2]
+[ext_resource type="Script" path="res://jeu.gd" id="2"]
 
-[sub_resource type="AudioStreamMicrophone" id=1]
+[sub_resource type="AudioStream" id="AudioStream_vj7ne"]
 
-[node name="jeu" type="Spatial"]
-script = ExtResource( 2 )
+[sub_resource type="Environment" id="Environment_m7a54"]
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2 )
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.01
-autostart = true
+[node name="jeu" type="Node3D"]
+script = ExtResource("2")
 
 [node name="Player" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 1 )
-autoplay = true
+stream = SubResource("AudioStream_vj7ne")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_m7a54")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.688355, 0.725374, 0, -0.725374, 0.688355, 0, 5, 3)
+light_color = Color(1, 1, 0.341176, 1)
+shadow_enabled = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="Timer3" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="Timer4" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="Timer5" type="Timer" parent="."]
+wait_time = 0.05
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]
+[connection signal="timeout" from="Timer3" to="." method="_on_timer_3_timeout"]
+[connection signal="timeout" from="Timer4" to="." method="_on_timer_4_timeout"]
+[connection signal="timeout" from="Timer5" to="." method="_on_timer_5_timeout"]

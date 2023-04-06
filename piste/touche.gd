@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 
 # Declare member variables here. Examples:
@@ -18,12 +18,11 @@ func _ready():
 
 
 
-
-func _on_Area_body_entered(body):
+func _on_area_3d_body_entered(body):
 	emit_signal("note_enter",body)
 	pass # Replace with function body.
 
 
-func _on_Area_body_exited(body):
+func _on_area_3d_body_exited(body):
 	emit_signal("note_exit",body)
 	pass # Replace with function body.

@@ -1,0 +1,9 @@
+Timer
+AudioStreamPlayer
+CharacterBody3D
+StaticBody3D
+CollisionShape3D
+MeshInstance3D
+DirectionalLight3D
+WorldEnvironment
+Camera3D

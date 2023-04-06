@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 
 # Declare member variables here. Examples:
@@ -10,7 +10,7 @@ var entrer=0
 
 func _input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			match entrer:
 				1,2:
 					emit_signal("param",entrer)
@@ -18,8 +18,10 @@ func _input(event):
 					print("quitter")
 					get_tree().quit()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(_delta):
+	var nbr=get_tree().get_root().get_node("jeu").get("nbrtouche")
+	$Node3D/plateau.scale.x=1+(nbr-3)*0.25
+	pass
 
 
 func _on_StaticBody_mouse_entered():

@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 
 # Declare member variables here. Examples:
@@ -13,28 +13,28 @@ func _ready():
 	nbr=get_tree().get_root().get_node("jeu").get("nbrtouche")
 	match nbr:
 		3:
-			self.get_node("StaticBody/MeshInstance").material_override = color[0]
+			self.get_node("StaticBody3D/MeshInstance3D").material_override = color[0]
 		4:
-			self.get_node("StaticBody2/MeshInstance").material_override = color[0]
+			self.get_node("StaticBody2/MeshInstance3D").material_override = color[0]
 		5:
-			self.get_node("StaticBody4/MeshInstance").material_override = color[0]
+			self.get_node("StaticBody4/MeshInstance3D").material_override = color[0]
 
 func _input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if entrer!=0:
-				self.get_node("StaticBody/MeshInstance").material_override = color[1]
-				self.get_node("StaticBody2/MeshInstance").material_override = color[1]
-				self.get_node("StaticBody4/MeshInstance").material_override = color[1]
+				self.get_node("StaticBody3D/MeshInstance3D").material_override = color[1]
+				self.get_node("StaticBody2/MeshInstance3D").material_override = color[1]
+				self.get_node("StaticBody4/MeshInstance3D").material_override = color[1]
 				match entrer:
 					1:
-						self.get_node("StaticBody/MeshInstance").material_override = color[0]
+						self.get_node("StaticBody3D/MeshInstance3D").material_override = color[0]
 						nbr=3
 					2:
-						self.get_node("StaticBody2/MeshInstance").material_override = color[0]
+						self.get_node("StaticBody2/MeshInstance3D").material_override = color[0]
 						nbr=4
 					3:
-						self.get_node("StaticBody4/MeshInstance").material_override = color[0]
+						self.get_node("StaticBody4/MeshInstance3D").material_override = color[0]
 						nbr=5
 					6:
 						emit_signal("touche",nbr)
