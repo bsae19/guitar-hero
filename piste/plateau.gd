@@ -15,12 +15,24 @@ var note_in=[]
 var feu=[]
 var score=0
 var multi=1
+var tp=[]
 signal update(index)
+
+func _process(_delta):
+	for i in note_in:
+		if i[2] and !feu[i[0][1]].is_playing():
+			feu[i[0][1]].visible=true
+			feu[i[0][1]].play()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	get_tree().get_root().get_node("jeu").connect("all_note", Callable(self, "add"))
 	get_tree().get_root().get_node("jeu").connect("click", Callable(self, "verif"))
+	get_tree().get_root().get_node("jeu").connect("click2", Callable(self, "verif2"))
 	couleur=get_tree().get_root().get_node("jeu").get("colors")
+	score=get_tree().get_root().get_node("jeu").get("score")
+	multi=get_tree().get_root().get_node("jeu").get("multi")
+	$Score.text="Score: "+ str(score)
+	$Multi.text="x"+ str(multi)
 	nbr=get_tree().get_root().get_node("jeu").get("nbrtouche")
 	$Node3D/plateau.scale.x=1.0*nbr/3.0
 	var pos=0
@@ -64,39 +76,80 @@ func add(no):
 func enter(node):
 	for i in range(0,notes.size()):
 		if notes[i][0].get_node("StaticBody3D")==node:
-			note_in.append([notes[i],i])
+			note_in.append([notes[i],true,false])
 
 func exit(node):
 	var index=-1
 	var test=false
 	for i in range(0,note_in.size()):
-		if note_in[i][0][0].get_node("StaticBody3D")==node:
-			index=i
-			test=true
+		if note_in[i][0][2]==0:
+			if note_in[i][0][0].get_node("StaticBody3D")==node:
+				index=i
+				test=true
+		else:
+			if note_in[i][0][0].get_node("StaticBody3D")==node:
+				note_in[i][1]=false
+			if note_in[i][0][0].get_node("longeur").get_node("fil")==node:
+				index=i
+				test=true
+				
 	if test:
 		note_in.remove_at(index)
 
 func verif(index):
 	var ind=-1
+	var ind2=-1
 	var test=false
 	for i in range(0,note_in.size()):
-		if note_in[i][0][1]==index:
-			ind=i
-			test=true
+		for y in range(0,notes.size()):
+			if notes[y][0]==note_in[i][0][0]:
+				if note_in[i][0][1]==index:
+					ind=y
+					ind2=i
+					test=true
 	if test:
-		score+=10*multi
+		if note_in[ind2][0][2]==0:
+			score+=5*multi
+			if multi<8:
+				multi+=1
+			$Score.text="Score: "+ str(score)
+			feu[index].visible=true
+			feu[index].play()
+			emit_signal("update",ind)
+			note_in.remove_at(ind2)
+			tp.append(1)
+		else:
+			if note_in[ind2][1]==true:
+				feu[index].visible=true
+				feu[index].play()
+				note_in[ind2][2]=true
+	$Multi.text="x"+str(multi)
+
+func verif2(index):
+	var ind=-1
+	var ind2=-1
+	var test=false
+	for i in range(0,note_in.size()):
+		for y in range(0,notes.size()):
+			if notes[y][0]==note_in[i][0][0]:
+				if note_in[i][0][1]==index and note_in[i][2]:
+					ind=y
+					ind2=i
+					test=true
+	if test:
+		note_in[ind2][2]=false
+		feu[note_in[ind2][0][1]].visible=false
+		var scr=round(round(note_in[ind2][0][0].position.z-4.5)/5)
+		score+=10*multi+scr*2*multi
 		if multi<8:
 			multi+=1
 		$Score.text="Score: "+ str(score)
-		feu[note_in[ind][0][1]].visible=true
-		feu[note_in[ind][0][1]].play()
-		note_in[ind][0][0].queue_free()
-		emit_signal("update",note_in[ind][1])
-		note_in.remove_at(ind)
+		emit_signal("update",ind)
+		note_in.remove_at(ind2)
 	else:
-		if multi>1:
-			multi-=1
-	$Multi.text="x"+ str(multi)
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+		if tp.size()==0:
+			if multi>1:
+				multi-=1
+		else:
+			tp.remove_at(0)
+	$Multi.text="x"+str(multi)

@@ -1,16 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://b5s2y3y68xndb"]
+[gd_scene load_steps=7 format=3 uid="uid://b5s2y3y68xndb"]
 
 [ext_resource type="Script" path="res://jeu.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://cfkb04my534bh" path="res://image/fond.png" id="2_6f8i8"]
 
-[sub_resource type="AudioStream" id="AudioStream_vj7ne"]
+[sub_resource type="AudioStream" id="AudioStream_sv0m1"]
 
 [sub_resource type="Environment" id="Environment_m7a54"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hmu2i"]
+albedo_texture = ExtResource("2_6f8i8")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_bq3x6"]
+material = SubResource("StandardMaterial3D_hmu2i")
 
 [node name="jeu" type="Node3D"]
 script = ExtResource("2")
 
 [node name="Player" type="AudioStreamPlayer" parent="."]
-stream = SubResource("AudioStream_vj7ne")
+stream = SubResource("AudioStream_sv0m1")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
@@ -27,7 +34,6 @@ shadow_enabled = true
 wait_time = 0.05
 
 [node name="Timer2" type="Timer" parent="."]
-wait_time = 0.05
 
 [node name="Timer3" type="Timer" parent="."]
 wait_time = 0.05
@@ -37,6 +43,10 @@ wait_time = 0.05
 
 [node name="Timer5" type="Timer" parent="."]
 wait_time = 0.05
+
+[node name="fond" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0)
+mesh = SubResource("PlaneMesh_bq3x6")
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

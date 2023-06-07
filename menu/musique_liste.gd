@@ -1,11 +1,14 @@
 extends Node3D
 
+signal jeu(ent)
+var fon=preload("res://font/Angellya.ttf")
+var ent=0
 var color=preload("res://couleur/black.tres")
 var format=[".mp3"]
 var actuel=null
+var files = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var files = []
 	var dir=DirAccess.open("res://son")
 	if dir:
 		dir.list_dir_begin()
@@ -15,11 +18,9 @@ func _ready():
 			if !dir.current_is_dir():
 				for i in format:
 					if file_name.ends_with(i):
-						var file2=[]
-						file2.append(file_name)
 						var info=file_name.split(i)
-						file2.append(info[0])
-						files.append(file2)
+						var f=info[0].split("_")
+						files.append(file_name)
 						var body=StaticBody3D.new()
 						body.position.y=x
 						x-=1
@@ -31,7 +32,7 @@ func _ready():
 						rec.size.z=0.2
 						rec.material=color
 						morceau.mesh=rec
-						morceau.position.x=-1.4
+						morceau.position.x=0
 						morceau.position.y=1.6
 						morceau.scale.x=1.3
 						body.add_child(morceau)
@@ -42,28 +43,48 @@ func _ready():
 						shape.size.z=0.1
 						shape.margin=0.04
 						coli.shape=shape
-						coli.position.x=-1.4
+						coli.position.x=0
 						coli.position.y=1.6
 						body.add_child(coli)
-						body.connect("mouse_entered",Callable(self, "_on_StaticBody3D_mouse_entered"))
-						#body.connect("mouse_exited",Callable(self, "_on_StaticBody3D_mouse_exited"))
+						var t=Label3D.new()
+						t.pixel_size=0.0168
+						t.text=f[1]
+						t.font=fon
+						t.font_size=17
+						t.outline_size=12
+						t.uppercase=true
+						t.position.y=1.65
+						t.position.z=0.11
+						body.add_child(t)
+						var t1=Label3D.new()
+						t1.pixel_size=0.0168
+						t1.text=f[0]
+						t1.font_size=5
+						t1.outline_size=0
+						t1.uppercase=true
+						t1.position.y=1.42
+						t1.position.z=0.11
+						t1.position.x=-0.6
+						body.add_child(t1)
+						var test=func():
+							ent=abs(x)
+						body.connect("mouse_entered",test)
+						var test2=func():
+							ent=0
+						body.connect("mouse_exited",test2)
 				file_name=dir.get_next()
-	print(files)
 
-
-func _on_StaticBody3D_mouse_entered():
-	var listen=get_signal_connection_list("mouse_entered")
-	print(listen.size())
-#Titre:  Overthinking
-#Auteur: RYYZN
-#Source: https://soundcloud.com/ryyzn
-#Licence: https://creativecommons.org/licenses/by/3.0/deed.fr
-
-#Titre:  I Can't Stop
-#Auteur: Punch Deck
-#Source: https://soundcloud.com/punch-deck
-#Licence: https://creativecommons.org/licenses/by/4.0/deed.fr
-
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			if ent !=0:
+				emit_signal("jeu",files[ent-1])
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			if self.position.y<files.size()/1.5:
+				self.position.y+=0.1
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			if self.position.y>-files.size()/10.0:
+				self.position.y-=0.1
 func _process(_delta):
 	pass
 
